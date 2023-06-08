@@ -2,10 +2,11 @@ from json import dumps
 
 import shapefile
 
+from src.rivers_lk._common import GEOJSON_PATH, SHP_PATH
 
 def main():
     # read the shapefile
-    reader = shapefile.Reader("data/hdx/lka_rapidsl_rvr_250k_sdlka.shp")
+    reader = shapefile.Reader(SHP_PATH)
     fields = reader.fields[1:]
     field_names = [field[0] for field in fields]
     buffer = []
@@ -15,7 +16,7 @@ def main():
         buffer.append(dict(type="Feature", geometry=geom, properties=atr))
 
     # write the GeoJSON file
-    geojson = open("data/hdx/lka_rapidsl_rvr_250k_sdlka.geo.json", "w")
+    geojson = open(GEOJSON_PATH, "w")
     geojson.write(
         dumps({"type": "FeatureCollection", "features": buffer}, indent=2)
         + "\n"

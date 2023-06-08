@@ -3,8 +3,7 @@ import colorsys
 import geopandas as gpd
 import matplotlib.pyplot as plt
 
-ORIGINAL_PATH = 'data/hdx/lka_rapidsl_rvr_250k_sdlka.geo.json'
-ANALYZED_PATH = 'data/hdx/lka_rapidsl_rvr_250k_sdlka.analyzed.geo.json'
+from rivers_lk._common import GEOJSON_PATH
 
 LONGEST_RIVER_NAMES = [
     'Mahaweli Ganga',
@@ -45,7 +44,7 @@ def get_color(name: str, code: int) -> str:
 
 
 def main():
-    df = gpd.read_file(ORIGINAL_PATH)
+    df = gpd.read_file(GEOJSON_PATH)
     colors = []
     data_list = df.to_dict('records')
     for d in data_list:
@@ -54,16 +53,10 @@ def main():
         color = get_color(name, code)
         colors.append(color)
 
-        if name == 'Maha Oya':
-            print(d)
-
     df['color'] = colors
 
     df.plot(figsize=(10, 10), aspect=1, linewidth=0.8, color=df['color'])
     plt.show()
-
-    for name in sorted(NAME_TO_COLOR.keys()):
-        print(name)
 
 
 if __name__ == '__main__':
